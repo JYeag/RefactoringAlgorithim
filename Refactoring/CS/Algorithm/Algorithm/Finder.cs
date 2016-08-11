@@ -11,16 +11,49 @@ namespace Algorithm
             ListOfPeople = people;
         }
 
-        public Comparison Find(FinderOption option)
+        public Comparison FindDifferences(FinderOption option)
+        {
+            var comparisons = MakeListOfComparisons();
+            
+            if (comparisons.Count < 1)
+            {
+                return new Comparison();
+            }
+
+            Comparison result = comparisons[0];
+            foreach (var comparison in comparisons)
+            {
+                switch (option)
+                {
+                    case FinderOption.Closest:
+                        if (comparison.Difference < result.Difference)
+                        {
+                            result = comparison;
+                        }
+                        break;
+
+                    case FinderOption.Furthest:
+                        if (comparison.Difference > result.Difference)
+                        {
+                            result = comparison;
+                        }
+                        break;
+                }
+            }
+
+            return result;
+        }
+
+
+        public List<Comparison> MakeListOfComparisons()
         {
             var listOfComparisons = new List<Comparison>();
-
-            for(var i = 0; i < ListOfPeople.Count - 1; i++)
+            for (var i = 0; i < ListOfPeople.Count - 1; i++)
             {
-                for(var j = i + 1; j < ListOfPeople.Count; j++)
+                for (var j = i + 1; j < ListOfPeople.Count; j++)
                 {
                     var currentComparison = new Comparison();
-                    if(ListOfPeople[i].BirthDate < ListOfPeople[j].BirthDate)
+                    if (ListOfPeople[i].BirthDate < ListOfPeople[j].BirthDate)
                     {
                         currentComparison.Person1 = ListOfPeople[i];
                         currentComparison.Person2 = ListOfPeople[j];
@@ -34,34 +67,7 @@ namespace Algorithm
                     listOfComparisons.Add(currentComparison);
                 }
             }
-
-            if(listOfComparisons.Count < 1)
-            {
-                return new Comparison();
-            }
-
-            Comparison answer = listOfComparisons[0];
-            foreach(var result in listOfComparisons)
-            {
-                switch(option)
-                {
-                    case FinderOption.Closest:
-                        if(result.Difference < answer.Difference)
-                        {
-                            answer = result;
-                        }
-                        break;
-
-                    case FinderOption.Furthest:
-                        if(result.Difference > answer.Difference)
-                        {
-                            answer = result;
-                        }
-                        break;
-                }
-            }
-
-            return answer;
+            return listOfComparisons;
         }
     }
 }
