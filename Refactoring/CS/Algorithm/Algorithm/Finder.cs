@@ -11,37 +11,10 @@ namespace Algorithm
             ListOfPeople = people;
         }
 
-        public Comparison FindDifferences(FinderOption option)
+        public Comparison FindDesiredComparison(FinderOption option)
         {
             var comparisons = MakeListOfComparisons();
-            
-            if (comparisons.Count < 1)
-            {
-                return new Comparison();
-            }
-
-            Comparison result = comparisons[0];
-            foreach (var comparison in comparisons)
-            {
-                switch (option)
-                {
-                    case FinderOption.Closest:
-                        if (comparison.Difference < result.Difference)
-                        {
-                            result = comparison;
-                        }
-                        break;
-
-                    case FinderOption.Furthest:
-                        if (comparison.Difference > result.Difference)
-                        {
-                            result = comparison;
-                        }
-                        break;
-                }
-            }
-
-            return result;
+            return CheckForBestComparison(comparisons, option);
         }
 
 
@@ -68,6 +41,42 @@ namespace Algorithm
                 }
             }
             return listOfComparisons;
+        }
+
+        public Comparison CheckForBestComparison(List<Comparison> comparisons, FinderOption option)
+        {
+            var result = new Comparison();
+            if (comparisons.Count > 0)
+            {
+                result = comparisons[0];
+                if (comparisons.Count > 1)
+                {
+                    switch (option)
+                    {
+                        case FinderOption.Closest:
+                            foreach (var comparison in comparisons)
+                            {
+                                if (comparison.Difference < result.Difference)
+                                {
+                                    result = comparison;
+                                }
+                            }
+                            break;
+
+                        case FinderOption.Furthest:
+                            foreach (var comparison in comparisons)
+                            {
+                                if (comparison.Difference > result.Difference)
+                                {
+                                    result = comparison;
+                                }
+                            }
+                            break;
+
+                    }
+                }
+            }
+            return result;
         }
     }
 }

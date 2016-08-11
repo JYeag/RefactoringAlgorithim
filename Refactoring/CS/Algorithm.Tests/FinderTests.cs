@@ -12,7 +12,7 @@ namespace Algorithm.Test
             var list = new List<Person>();
             var finder = new Finder(list);
 
-            var result = finder.FindDifferences(FinderOption.Closest);
+            var result = finder.FindDesiredComparison(FinderOption.Closest);
 
             Assert.Null(result.Person1);
             Assert.Null(result.Person2);
@@ -24,7 +24,7 @@ namespace Algorithm.Test
             var list = new List<Person>() { sue };
             var finder = new Finder(list);
 
-            var result = finder.FindDifferences(FinderOption.Closest);
+            var result = finder.FindDesiredComparison(FinderOption.Closest);
 
             Assert.Null(result.Person1);
             Assert.Null(result.Person2);
@@ -36,7 +36,7 @@ namespace Algorithm.Test
             var list = new List<Person>() { sue, greg };
             var finder = new Finder(list);
 
-            var result = finder.FindDifferences(FinderOption.Closest);
+            var result = finder.FindDesiredComparison(FinderOption.Closest);
 
             Assert.Same(sue, result.Person1);
             Assert.Same(greg, result.Person2);
@@ -48,7 +48,7 @@ namespace Algorithm.Test
             var list = new List<Person>() { greg, mike };
             var finder = new Finder(list);
 
-            var result = finder.FindDifferences(FinderOption.Furthest);
+            var result = finder.FindDesiredComparison(FinderOption.Furthest);
 
             Assert.Same(greg, result.Person1);
             Assert.Same(mike, result.Person2);
@@ -60,7 +60,7 @@ namespace Algorithm.Test
             var list = new List<Person>() { greg, mike, sarah, sue };
             var finder = new Finder(list);
 
-            var result = finder.FindDifferences(FinderOption.Furthest);
+            var result = finder.FindDesiredComparison(FinderOption.Furthest);
 
             Assert.Same(sue, result.Person1);
             Assert.Same(sarah, result.Person2);
@@ -72,7 +72,7 @@ namespace Algorithm.Test
             var list = new List<Person>() { greg, mike, sarah, sue };
             var finder = new Finder(list);
 
-            var result = finder.FindDifferences(FinderOption.Closest);
+            var result = finder.FindDesiredComparison(FinderOption.Closest);
 
             Assert.Same(sue, result.Person1);
             Assert.Same(greg, result.Person2);
