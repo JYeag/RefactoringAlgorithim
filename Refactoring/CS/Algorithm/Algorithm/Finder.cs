@@ -4,56 +4,56 @@ namespace Algorithm
 {
     public class Finder
     {
-        private readonly List<Thing> _p;
+        private readonly List<Person> ListOfPeople;
 
-        public Finder(List<Thing> p)
+        public Finder(List<Person> people)
         {
-            _p = p;
+            ListOfPeople = people;
         }
 
-        public F Find(FT ft)
+        public Comparison Find(FinderOption option)
         {
-            var tr = new List<F>();
+            var listOfComparisons = new List<Comparison>();
 
-            for(var i = 0; i < _p.Count - 1; i++)
+            for(var i = 0; i < ListOfPeople.Count - 1; i++)
             {
-                for(var j = i + 1; j < _p.Count; j++)
+                for(var j = i + 1; j < ListOfPeople.Count; j++)
                 {
-                    var r = new F();
-                    if(_p[i].BirthDate < _p[j].BirthDate)
+                    var currentComparison = new Comparison();
+                    if(ListOfPeople[i].BirthDate < ListOfPeople[j].BirthDate)
                     {
-                        r.P1 = _p[i];
-                        r.P2 = _p[j];
+                        currentComparison.Person1 = ListOfPeople[i];
+                        currentComparison.Person2 = ListOfPeople[j];
                     }
                     else
                     {
-                        r.P1 = _p[j];
-                        r.P2 = _p[i];
+                        currentComparison.Person1 = ListOfPeople[j];
+                        currentComparison.Person2 = ListOfPeople[i];
                     }
-                    r.D = r.P2.BirthDate - r.P1.BirthDate;
-                    tr.Add(r);
+                    currentComparison.Difference = currentComparison.Person2.BirthDate - currentComparison.Person1.BirthDate;
+                    listOfComparisons.Add(currentComparison);
                 }
             }
 
-            if(tr.Count < 1)
+            if(listOfComparisons.Count < 1)
             {
-                return new F();
+                return new Comparison();
             }
 
-            F answer = tr[0];
-            foreach(var result in tr)
+            Comparison answer = listOfComparisons[0];
+            foreach(var result in listOfComparisons)
             {
-                switch(ft)
+                switch(option)
                 {
-                    case FT.One:
-                        if(result.D < answer.D)
+                    case FinderOption.Closest:
+                        if(result.Difference < answer.Difference)
                         {
                             answer = result;
                         }
                         break;
 
-                    case FT.Two:
-                        if(result.D > answer.D)
+                    case FinderOption.Furthest:
+                        if(result.Difference > answer.Difference)
                         {
                             answer = result;
                         }
