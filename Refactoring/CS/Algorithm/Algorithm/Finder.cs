@@ -10,57 +10,49 @@ namespace Algorithm {
         }
 
         public Comparison FindDesiredComparison(FinderOption option) {
-            var comparisons = MakeListOfComparisons();
-            return CheckForBestComparison(comparisons, option);
+            var arrangedListOfPeople = ArrangeListOfPeopleByBirthdate();
+            return CheckForBestComparison(arrangedListOfPeople, option);
         }
 
 
-        public List<Comparison> MakeListOfComparisons() {
-            var listOfComparisons = new List<Comparison>();
-            for (var i = 0; i < ListOfPeople.Count - 1; i++) {
-                for (var j = i + 1; j < ListOfPeople.Count; j++) {
-                    var currentComparison = new Comparison();
-                    if (ListOfPeople[i].BirthDate < ListOfPeople[j].BirthDate) {
-                        currentComparison.Person1 = ListOfPeople[i];
-                        currentComparison.Person2 = ListOfPeople[j];
-                    }
-                    else {
-                        currentComparison.Person1 = ListOfPeople[j];
-                        currentComparison.Person2 = ListOfPeople[i];
-                    }
-                    currentComparison.Difference = currentComparison.Person2.BirthDate - currentComparison.Person1.BirthDate;
-                    listOfComparisons.Add(currentComparison);
-                }
-            }
-            return listOfComparisons;
+        public List<Person> ArrangeListOfPeopleByBirthdate() {
+            return ListOfPeople.OrderBy(p => p.BirthDate).ToList();
         }
 
-        public Comparison CheckForBestComparison(List<Comparison> comparisons, FinderOption option) {
+        public Comparison CheckForBestComparison(List<Person> arrangedListOfPeople, FinderOption option) {
             var result = new Comparison();
-            if (comparisons.Count > 0) {
-                result = comparisons[0];
-
+            if (arrangedListOfPeople.Count > 1) {
                 switch (option) {
                     case FinderOption.Closest:
-                        result = FindClosest(comparisons);
+                        result = FindClosest(arrangedListOfPeople);
                         break;
 
                     case FinderOption.Furthest:
-                        result = FindFurthest(comparisons);
+                        result = FindFurthest(arrangedListOfPeople);
                         break;
                 }
             }
             return result;
         }
 
-        public Comparison FindFurthest(List<Comparison> comparisons) {
-            return comparisons.OrderByDescending(c => c.Difference)
-                .First();
+        public Comparison FindFurthest(List<Person> arrangedListOfPeople) {
+
+            return new Comparison { Person1 = arrangedListOfPeople[0], Person2 = arrangedListOfPeople[arrangedListOfPeople.Count - 1], Difference = arrangedListOfPeople[arrangedListOfPeople.Count - 1].BirthDate - arrangedListOfPeople[0].BirthDate };
         }
 
-        public Comparison FindClosest(List<Comparison> comparisons) {
+        public Comparison FindClosest(List<Person> arrangedListOfPeople) {
+            List<Comparison> comparisons = new List<Comparison>();
+            for (int i = 0; i < arrangedListOfPeople.Count - 1; i++) {
+                comparisons.Add(new Comparison {
+                    Person1 = arrangedListOfPeople[i],
+                    Person2 = arrangedListOfPeople[i + 1],
+                    Difference = arrangedListOfPeople[i + 1].BirthDate - arrangedListOfPeople[i].BirthDate
+                });
+            }
             return comparisons.OrderBy(c => c.Difference)
                 .First();
         }
+
+
     }
 }
