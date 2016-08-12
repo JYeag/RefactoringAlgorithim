@@ -36,23 +36,29 @@ namespace Algorithm {
         }
 
         public Comparison FindFurthest(List<Person> arrangedListOfPeople) {
-
             return new Comparison { Person1 = arrangedListOfPeople[0], Person2 = arrangedListOfPeople[arrangedListOfPeople.Count - 1], Difference = arrangedListOfPeople[arrangedListOfPeople.Count - 1].BirthDate - arrangedListOfPeople[0].BirthDate };
         }
 
         public Comparison FindClosest(List<Person> arrangedListOfPeople) {
-            List<Comparison> comparisons = new List<Comparison>();
-            for (int i = 0; i < arrangedListOfPeople.Count - 1; i++) {
-                comparisons.Add(new Comparison {
-                    Person1 = arrangedListOfPeople[i],
-                    Person2 = arrangedListOfPeople[i + 1],
-                    Difference = arrangedListOfPeople[i + 1].BirthDate - arrangedListOfPeople[i].BirthDate
-                });
-            }
-            return comparisons.OrderBy(c => c.Difference)
-                .First();
+            List<Comparison> comparisons = MakeListOfClosestPeople(arrangedListOfPeople);
+            return comparisons.OrderBy(c => c.Difference).First();
         }
 
+        public List<Comparison> MakeListOfClosestPeople(List<Person> arrangedListOfPeople) {
+            List<Comparison> comparisons = new List<Comparison>();
+            for (int i = 0; i < arrangedListOfPeople.Count - 1; i++) {
+                comparisons.Add(MakeComparison(arrangedListOfPeople[i], arrangedListOfPeople[i + 1]));
+            }
+            return comparisons;
+        }
+
+        public Comparison MakeComparison(Person younger, Person older) {
+            return new Comparison {
+                Person1 = younger,
+                Person2 = older,
+                Difference = older.BirthDate - younger.BirthDate
+            };
+        }
 
     }
 }
