@@ -13,7 +13,7 @@ namespace Algorithm {
             return CheckForBestComparison(ListOfPeople, option);
         }
 
-        public Comparison CheckForBestComparison(List<Person> ListOfPeople, string option) {
+        private Comparison CheckForBestComparison(List<Person> ListOfPeople, string option) {
             var result = new Comparison();
             if (ListOfPeople.Count > 1) {
                 result = FinderSearches.option[option](ListOfPeople);

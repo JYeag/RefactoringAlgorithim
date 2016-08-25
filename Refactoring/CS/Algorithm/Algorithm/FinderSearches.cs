@@ -18,7 +18,7 @@ namespace Algorithm {
             }
         };
 
-        static public List<Comparison> MakeListOfClosestPeople(List<Person> ListOfPeople) {
+        static List<Comparison> MakeListOfClosestPeople(List<Person> ListOfPeople) {
             List<Comparison> comparisons = new List<Comparison>();
             for (int i = 0; i < ListOfPeople.Count - 1; i++) {
                 comparisons.Add(MakeComparison(ListOfPeople[i], ListOfPeople[i + 1]));
@@ -26,7 +26,7 @@ namespace Algorithm {
             return comparisons;
         }
 
-        static public Comparison MakeComparison(Person younger, Person older) {
+        static Comparison MakeComparison(Person younger, Person older) {
             return new Comparison {
                 Person1 = younger,
                 Person2 = older,
