@@ -9,34 +9,24 @@ namespace Algorithm {
             ListOfPeople = people;
         }
 
-        public Comparison FindDesiredComparison(FinderOption option) {
-            var arrangedListOfPeople = ArrangeListOfPeopleByBirthdate();
+        public Comparison FindDesiredComparison(string option) {
+            var arrangedListOfPeople = ListOfPeople.OrderBy(p => p.BirthDate).ToList();
             return CheckForBestComparison(arrangedListOfPeople, option);
         }
 
-
-        public List<Person> ArrangeListOfPeopleByBirthdate() {
-            return ListOfPeople.OrderBy(p => p.BirthDate).ToList();
-        }
-
-        public Comparison CheckForBestComparison(List<Person> arrangedListOfPeople, FinderOption option) {
+        public Comparison CheckForBestComparison(List<Person> arrangedListOfPeople, string option) {
             var result = new Comparison();
             if (arrangedListOfPeople.Count > 1) {
-                switch (option) {
-                    case FinderOption.Closest:
-                        result = FindClosest(arrangedListOfPeople);
-                        break;
-
-                    case FinderOption.Furthest:
-                        result = FindFurthest(arrangedListOfPeople);
-                        break;
-                }
+                result = FinderOption.option[option](arrangedListOfPeople);
             }
             return result;
         }
 
         public Comparison FindFurthest(List<Person> arrangedListOfPeople) {
-            return new Comparison { Person1 = arrangedListOfPeople[0], Person2 = arrangedListOfPeople[arrangedListOfPeople.Count - 1], Difference = arrangedListOfPeople[arrangedListOfPeople.Count - 1].BirthDate - arrangedListOfPeople[0].BirthDate };
+            return new Comparison {
+                Person1 = arrangedListOfPeople.First(),
+                Person2 = arrangedListOfPeople.Last(),
+                Difference = arrangedListOfPeople.Last().BirthDate - arrangedListOfPeople.First().BirthDate };
         }
 
         public Comparison FindClosest(List<Person> arrangedListOfPeople) {
